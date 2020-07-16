@@ -1,0 +1,11 @@
+[Unit]
+Description=Headless Aggressor
+Requires=cobaltstrike
+After=cobaltstrike
+
+[Service]
+Restart=always
+ExecStart=/root/aggressor/start-aggressor.sh
+
+[Install]
+WantedBy=multi-user.target

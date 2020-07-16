@@ -1,0 +1,11 @@
+[Unit]
+Description=CobaltStrike
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/root/start-cobaltstrike.sh
+
+[Install]
+WantedBy=multi-user.target

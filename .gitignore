@@ -1,0 +1,4 @@
+global.tf
+.terraform
+*tfstate*
+ssh_configs/*
