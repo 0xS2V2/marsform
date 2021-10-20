@@ -1,7 +1,7 @@
 
 module "http-server" {
   source        = "../../modules/server-digitalocean-https"
-  name          = "test-core-server"
+  name          = "test-redirector"
 
   # optionnal
   #size   = "s-1vcpu-1gb"
