@@ -68,11 +68,11 @@ resource "digitalocean_record" "domain-www" {
 }
 
 
-module "azure_domain_front" {
-  source = "../front-azure"
-  front_name = var.azure_domain_front
-  front_redirect = module.core.ip
-}
+#module "azure_domain_front" {
+#  source = "../front-azure"
+#  front_name = var.azure_domain_front
+#  front_redirect = module.core.ip
+#}
 
 #module "fastly_domain_front" {
 #  source = "../front-fastly"
