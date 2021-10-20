@@ -13,6 +13,3 @@ cd /root/cobaltstrike
 chmod u+x /root/start-cobaltstrike.sh
 systemctl start cobaltstrike
 systemctl enable cobaltstrike
-
-# End
-touch /tmp/cobaltstrike.sh.done

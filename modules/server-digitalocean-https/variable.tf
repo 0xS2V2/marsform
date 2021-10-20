@@ -1,6 +1,8 @@
 variable "name" { }
 
+variable "do_image" { default = "" }
 variable "do_size" { default = "" }
+variable "do_region" { default = "" }
 
 variable "c2_ip" { default = "" }
 variable "spoofed_website" { default = "" }

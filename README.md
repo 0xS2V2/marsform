@@ -6,6 +6,7 @@ Marsform is a RedTeam infrastructure deployment tool based on [Terraform](https:
 
 The goal is to deploy a secure infrastructure as fast as possible.
 
+A simplified tutorial is available in [infra-examples](infra-examples)
 
 ## Setup
 
@@ -18,7 +19,8 @@ Digital Ocean and Azure (mostly) are used in this setup, but any provider could 
 
 
 ###  1) Define your API Keys/Tokens.
-Add this to your `.bashrc` or `.zshrc`
+
+Add this to your `.bashrc`
 
 ```
 export DIGITALOCEAN_TOKEN="CHANGEME"
@@ -36,10 +38,6 @@ Install `azure-cli`. Make sure you run `az login` before deploying in Azure.
 - Set the `jumpbox_ip` variable (a jumpbox where you can ssh with a private key)
 - Set the `do_ssh_keys` variable (a comma separated list of ssh key fingerprints) : ```curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${DIGITALOCEAN_TOKEN}" "https://api.digitalocean.com/v2/account/keys" | grep -o '"id":[0-9]*'```
 
-Make sure the `./modules/*/global.tf` symlink points to the root `global.tf`:
-```
-find ./modules -type f -name global.tf -exec ln -sf ../../global.tf {} \;
-```
 
 
 ### 4) Create missing files
@@ -71,10 +69,9 @@ terraform apply
 
 ## Caveats
 
-- Some modules or resources wait until a specific file is created in `/tmp/`; this is an ugly way to manage dependencies, but better than nothing
-- When deploying a FiercePhish server, you must copy/paste the value from the FiercePhish installation output (saved in /tmp/fiercephish-install.out), then re-run `terraform apply`. (since the *mail._domainkey* key is generated during the installation)
 - Users **will** require port forward knowledge
 - Most stuff runs as root :(
+- When deploying a FiercePhish server, you must copy/paste the value from the FiercePhish installation output (saved in /tmp/fiercephish-install.out), then re-run `terraform apply`. (since the *mail._domainkey* key is generated during the installation)
 
 
 ### Typical Infrastructure Example

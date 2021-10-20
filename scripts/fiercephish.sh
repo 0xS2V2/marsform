@@ -12,11 +12,8 @@ MYSQL_ROOT_PASSWD="mysqlPasswd"
 ADMIN_USERNAME="admin"
 ADMIN_EMAIL="root@localhost"
 ADMIN_PASSWORD="defaultpass"
-CREATE_SWAPSPACE=false  
+CREATE_SWAPSPACE=false
 EOF
 
 echo 'table filter chain INPUT proto tcp dport (25) ACCEPT;' > /etc/ferm/ferm.d/smtp.conf
 systemctl reload ferm
-
-# End
-touch /tmp/fiercephish.sh.done

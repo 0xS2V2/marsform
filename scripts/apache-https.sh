@@ -10,6 +10,9 @@ cat <<EOF > /etc/apache2/sites-available/default-ssl.conf
     <Directory "/var/www/html">
         AllowOverride All
     </Directory>
+
+    RewriteEngine On
+
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -55,7 +58,5 @@ a2enmod ssl
 a2enmod rewrite
 a2enmod proxy_http
 a2ensite default-ssl
+a2dissite 000-default
 systemctl restart apache2
-
-# End
-touch /tmp/apache-https.sh.done

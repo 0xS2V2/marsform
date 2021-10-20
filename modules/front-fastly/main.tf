@@ -1,3 +1,4 @@
+
 # Deploy only if "front_name" is set
 
 resource "fastly_service_v1" "c2_endpoints" {
@@ -27,7 +28,7 @@ resource "fastly_service_v1" "c2_endpoints" {
 
 resource "null_resource" "ferm_whitelist" {
     count = var.front_name == "" ? 0 : 1
-    connection { 
+    connection {
       host = var.front_redirect
       bastion_host = var.jumpbox_ip
       private_key = file(var.ssh_private_key)

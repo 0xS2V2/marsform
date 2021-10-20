@@ -4,25 +4,20 @@ module "core" {
   name = var.name // characters are allowed: (a-z, A-Z, 0-9, . and -)
   do_image = "ubuntu-18-04-x64"
   do_size = var.do_size != "" ? var.do_size : ""
+  do_region = var.do_region != "" ? var.do_region : ""
 }
 
 resource "null_resource" "smtp" {
-  connection { 
+  depends_on = [ module.core ]
+
+  connection {
 	  host = module.core.ip
 	  bastion_host = var.jumpbox_ip
-	  private_key = file(var.ssh_private_key)
   }
 
   provisioner "remote-exec" {
-    scripts = [ 
-      "./scripts/fiercephish.sh" 
-    ]
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-        "echo 'table filter chain INPUT proto tcp dport (80 443) saddr (${var.trusted_ips}) ACCEPT;' > /etc/ferm/ferm.d/http_trusted_ips.conf",
-        "systemctl reload ferm"
+    scripts = [
+      "../../scripts/fiercephish.sh"
     ]
   }
 
@@ -34,12 +29,15 @@ resource "null_resource" "smtp" {
         "echo 'MYSQL_ROOT_PASSWD=\"${var.fiercephish_mysql_passwd}\"' >> ~/fiercephish.config",
         "cat /tmp/fiercephish-install.sh | bash | tee /tmp/fiercephish-install.out"
     ]
-  } 
+  }
+
+  provisioner "local-exec" {
+    command = "echo '    LocalForward  ${var.local_proxy} 127.0.0.1:80' >> ../../ssh_configs/config_${var.name}"
+  }
 }
 
 
 resource "digitalocean_domain" "register" {
-  count      = var.register_domain == "" ? 0 : 1
   depends_on = [ null_resource.smtp ]
   name       = var.domain
   ip_address = module.core.ip
@@ -48,7 +46,7 @@ resource "digitalocean_domain" "register" {
 
 resource "digitalocean_record" "wildcard" {
   depends_on = [ digitalocean_domain.register ]
-  domain = var.domain 
+  domain = var.domain
   type = "A"
   name = "@"
   value = module.core.ip
@@ -56,7 +54,7 @@ resource "digitalocean_record" "wildcard" {
 
 resource "digitalocean_record" "www" {
   depends_on = [ digitalocean_domain.register ]
-  domain = var.domain 
+  domain = var.domain
   type = "A"
   name = "www"
   value = module.core.ip
@@ -64,7 +62,7 @@ resource "digitalocean_record" "www" {
 
 resource "digitalocean_record" "mail" {
   depends_on = [ digitalocean_domain.register ]
-  domain = var.domain 
+  domain = var.domain
   type = "A"
   name = "mail"
   value = module.core.ip
@@ -108,5 +106,5 @@ resource "digitalocean_record" "dkim" {
   domain = var.domain
   type = "TXT"
   name = "mail._domainkey"
-  value = var.dkim_value 
+  value = var.dkim_value
 }

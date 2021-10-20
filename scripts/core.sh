@@ -1,7 +1,9 @@
 
 # Install common packages
 apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install -y ferm curl tmux git socat netcat dnsutils build-essential
+bash -c 'debconf-set-selections <<< "ferm    ferm/enable boolean true"'
+sleep 2
+apt-get install -y ferm curl tmux git socat netcat
 
 # Configure Ferm
 mkdir -p /etc/ferm/ferm.d
@@ -41,6 +43,3 @@ mkswap /swapfile
 swapon /swapfile
 grep -q swapfile /etc/fstab || echo '/swapfile swap swap defaults 0 0' >> /etc/fstab
 sudo swapon --show
-
-# End
-touch /tmp/core.sh.done

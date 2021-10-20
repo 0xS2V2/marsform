@@ -6,10 +6,9 @@ module "core" {
 }
 
 resource "null_resource" "http" {
-  connection { 
+  connection {
 	  host = module.core.ip
 	  bastion_host = var.jumpbox_ip
-	  private_key = file(var.ssh_private_key)
   }
 
   provisioner "remote-exec" {

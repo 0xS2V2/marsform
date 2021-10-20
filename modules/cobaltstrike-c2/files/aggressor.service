@@ -3,6 +3,9 @@ Description=Headless Aggressor
 Requires=cobaltstrike
 After=cobaltstrike
 
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
 [Service]
 Restart=always
 ExecStart=/root/aggressor/start-aggressor.sh

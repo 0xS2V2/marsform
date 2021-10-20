@@ -1,4 +1,6 @@
 variable "c2_ip" { }
+variable "redir_ip" { default = "" }
+variable "name" { }
 
 variable "local_proxy" { default = "50050" }
 

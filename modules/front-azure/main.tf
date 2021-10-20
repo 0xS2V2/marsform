@@ -1,6 +1,3 @@
-provider "azurerm" {
-  version = "~> 1.44"
-}
 
 # Deploy only if "front_name" is set
 
@@ -35,7 +32,7 @@ resource "azurerm_cdn_endpoint" "front" {
 
 
 resource "null_resource" "ferm_whitelist" {
-  connection { 
+  connection {
       host = var.redir_ip == "" ? var.front_redirect : var.redir_ip
       bastion_host = var.jumpbox_ip
       private_key = file(var.ssh_private_key)

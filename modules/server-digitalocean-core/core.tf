@@ -6,18 +6,9 @@ resource "digitalocean_droplet" "core" {
   region = var.do_region != "" ? var.do_region : var.do_default_region
   ssh_keys = var.do_ssh_keys
 
-  connection { 
+  connection {
 	  host = self.ipv4_address
 	  bastion_host = var.jumpbox_ip
-	  private_key = file(var.ssh_private_key)
-  }
-
-  provisioner "local-exec" {
-    command = "echo 'Host ${var.name}\n    Hostname      ${self.ipv4_address}\n    User          root\n    ProxyJump     jumpbox' > ./ssh_configs/config_${self.ipv4_address}"
-  }
-  provisioner "local-exec" {
-    when = destroy
-    command = "rm -f ./ssh_configs/config_${self.ipv4_address}"
   }
 
   provisioner "remote-exec" {
@@ -28,8 +19,25 @@ resource "digitalocean_droplet" "core" {
   }
 
   provisioner "remote-exec" {
-    scripts = [ 
-      "./scripts/core.sh" 
+    scripts = [
+      "../../scripts/core.sh"
     ]
+  }
+}
+
+resource "null_resource" "ssh_config" {
+  depends_on = [digitalocean_droplet.core]
+
+  triggers = {
+    name = var.name
+  }
+
+  provisioner "local-exec" {
+    command = "echo 'Host ${var.name}\n    Hostname      ${digitalocean_droplet.core.ipv4_address}\n    User          root\n    ProxyJump     jumpbox' > ../../ssh_configs/config_${self.triggers.name}"
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "rm -f ../../ssh_configs/config_${self.triggers.name}"
   }
 }
