@@ -60,7 +60,7 @@ The output will show the ssh config; you can copy it manually in `~/.ssh/config`
 Add this to your `~/.ssh/config` file (adjust the path):
 
 ```
-Include ~/tools/marsform/ssh_config/*
+Include ~/tools/marsform/ssh_configs/*
 ```
 
 ## 5) Adjust the `JUMPBOX` section in `global.tf`
