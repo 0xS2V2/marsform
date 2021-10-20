@@ -7,7 +7,7 @@
 
 ```apt-get install git openssh-client curl jq```
 
-- If you want, t
+- If you want, you can install the Terraform extension for VS Code to have auto-completion + syntax highlighting.
 
 # Digital Ocean setup
 
