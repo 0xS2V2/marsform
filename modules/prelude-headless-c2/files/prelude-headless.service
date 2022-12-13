@@ -1,0 +1,12 @@
+[Unit]
+Description=Prelude Headless
+Requires=network.target
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/root/prelude-headless/start_prelude_headless.sh
+SyslogIdentifier=prelude-headless
+
+[Install]
+WantedBy=multi-user.target

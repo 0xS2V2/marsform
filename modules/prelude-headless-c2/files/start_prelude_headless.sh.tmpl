@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /root/prelude-headless/
+./headless --hostName=$(hostname) --userDataPath=/root/prelude-headless/workspace/ \
+	--accountEmail=${ACCOUNT_EMAIL} \
+	--sessionToken=${SESSION_TOKEN}
